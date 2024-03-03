@@ -3,10 +3,20 @@ import { defineConfig } from 'astro/config';
 import react from "@astrojs/react";
 import compress from "astro-compress"
 import { VitePWA } from "vite-plugin-pwa"
+import cloudflare from "@astrojs/cloudflare";
 
 import { manifest, seoConfig } from "./utils/seoConfig"
 
 export default defineConfig({
+  output: "hybrid",
+  adapter: cloudflare({
+    imageService: "cloudflare",
+    runtime: {
+      mode: "local",
+      type: "pages",
+    },
+  }),
+
 	site: seoConfig.baseURL,
 	integrations: [
 		react(),

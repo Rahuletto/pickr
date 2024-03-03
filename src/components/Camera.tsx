@@ -1,4 +1,3 @@
-import React from "react";
 import { useRef, useEffect, useState } from "react";
 function Camera() {
   const videoRef = useRef(null);
