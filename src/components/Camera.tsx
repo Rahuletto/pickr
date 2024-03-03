@@ -2,6 +2,8 @@ import { useRef, useEffect, useState } from "react";
 function Camera() {
   const videoRef = useRef(null);
   const [color, setColor] = useState("#FF9D42");
+  const [frozen, setFrozen] = useState(null);
+
   useEffect(() => {
     getVideo();
   }, [videoRef]);
@@ -19,9 +21,10 @@ function Camera() {
       .then((stream) => {
         const track = stream.getVideoTracks()[0];
 
-        track.applyConstraints({ // @ts-ignore
-          advanced: [{torch: true}]
-      });
+        track.applyConstraints({
+          // @ts-ignore
+          advanced: [{ torch: true }],
+        });
 
         let video = videoRef.current;
         video.srcObject = stream;
@@ -30,11 +33,14 @@ function Camera() {
         var canvas = document.createElement("canvas");
         var ctx = canvas.getContext("2d");
 
-        setInterval(() => {
-          captureFrame();
-        }, 10);
+
+          setInterval(() => {
+            captureFrame();
+          }, 10);
 
         function captureFrame() {
+          if(frozen) return;
+
           canvas.width = 1280;
           canvas.height = 720;
           ctx.drawImage(video, 0, 0);
@@ -58,6 +64,7 @@ function Camera() {
           var avgB = b / (data.length / 4);
 
           var hexCode = rgbToHex(avgR, avgG, avgB);
+          
           setColor(hexCode);
         }
 
@@ -80,18 +87,19 @@ function Camera() {
     <div className="grid">
       <h3
         style={{
-          color: `${color}`,
+          color: `${frozen || color}`,
         }}
       >
         Pickr
       </h3>
       <div
+        onClick={() => setFrozen(frozen ? '' : color)}
         className="color"
         style={{
-          backgroundColor: `${color}`,
+          backgroundColor: `${frozen || color}`,
         }}
       >
-        <h1>{color}</h1>
+        <h1>{frozen || color}</h1>
         <video style={{ opacity: "0", display: "none" }} ref={videoRef} />
       </div>
     </div>
