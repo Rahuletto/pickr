@@ -1,0 +1,9 @@
+{
+  "extends": "astro/tsconfigs/strictest",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "strictNullChecks": false,
+    "exactOptionalPropertyTypes": false,
+    "jsxImportSource": "react"
+  }
+}
