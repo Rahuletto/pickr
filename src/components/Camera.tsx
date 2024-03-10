@@ -100,7 +100,7 @@ function Camera() {
         }}
       >
         <h1>{frozen || color}</h1>
-        <video style={{ opacity: "0", display: "none" }} ref={videoRef} />
+        <video className='video' ref={videoRef} />
       </div>
     </div>
   );
